@@ -1,0 +1,20 @@
+name:自动解压zip
+on:
+  workflow_dispatch: #可以手动在Actions页面点按钮触发
+  push:
+    branches: [ main ]
+jobs:
+  unzip-task:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name:执行解压
+        run: |
+          unzip -o ScreenPicker-v0.1.0-source.zip
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "自动解压zip文件" || echo "没有新变更"
+          git push
